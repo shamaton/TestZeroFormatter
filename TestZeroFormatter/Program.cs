@@ -40,14 +40,12 @@ namespace TestZeroFormatter
 
     private static void CheckPack<T>() where T : new()
     {
-      // StreamReaderでファイルを読み込む
+      // read pack file.
       FileStream fs = new FileStream(PackName<T>(), FileMode.Open);
-
-      //ファイルを読み込むバイト型配列を作成する
       byte[] bs = new byte[fs.Length];
-      //ファイルの内容をすべて読み込む
       fs.Read(bs, 0, bs.Length);
 
+      // deserialize
       var data = ZeroFormatterSerializer.Deserialize<T>(bs);
     }
 
