@@ -1,7 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
 using ZeroFormatter;
 
 namespace TestZeroFormatter
@@ -18,36 +17,39 @@ namespace TestZeroFormatter
 
       Console.WriteLine("start packing...");
 
-      // packing
+      List<Int32> a = new List<Int32>() {1,2,3};
+
+        // packing
       PackSimple<Int32>(123);
+      PackSimple<List<Int32>>(a, "ListInt32");
       PackObject<Data.Primitive>();
       PackObject<Data.PrimitiveNullable>();
 
       Console.WriteLine("completed.");
     }
 
-    private static void PackSimple<T>(T value)
+    private static void PackSimple<T>(T value, string name = "")
     {
       var data = ZeroFormatterSerializer.Serialize<T>(value);
-      SaveAndCheck<T>(data);
+      SaveAndCheck<T>(data, name);
     }
 
-    private static void PackObject<T>() where T : Base, new()
+    private static void PackObject<T>(string name = "") where T : Base, new()
     {
       T obj = new T();
       obj.DataSet();
       var data = ZeroFormatterSerializer.Serialize<T>(obj);
-      SaveAndCheck<T>(data);
+      SaveAndCheck<T>(data, name);
     }
 
-    private static void SaveAndCheck<T>(byte[] data)
+    private static void SaveAndCheck<T>(byte[] data, string name)
     {
       // save
-      File.WriteAllBytes(PackName<T>(), data);
+      File.WriteAllBytes(PackName<T>(name), data);
       Console.WriteLine(typeof(T).Name + " is packed !!");
 
       // deserialize check
-      FileStream fs = new FileStream(PackName<T>(), FileMode.Open);
+      FileStream fs = new FileStream(PackName<T>(name), FileMode.Open);
       byte[] bs = new byte[fs.Length];
       fs.Read(bs, 0, bs.Length);
 
@@ -56,9 +58,13 @@ namespace TestZeroFormatter
       Console.WriteLine("deserialize ok");
     }
 
-    private static string PackName<T>()
+    private static string PackName<T>(string name)
     {
-      return Dir + "/" + typeof(T).Name + ".pack";
+      if (name.Length < 1)
+      {
+        name = typeof(T).Name;
+      }
+      return Dir + "/" + name + ".pack";
     }
   }
 }
