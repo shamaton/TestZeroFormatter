@@ -16,37 +16,44 @@ namespace TestZeroFormatter
         Directory.CreateDirectory(Dir);
       }
 
-      // packing
-      Pack<Data.Primitive>();
-      Pack<Data.PrimitiveNullable>();
+      Console.WriteLine("start packing...");
 
-      // desealize
-      CheckPack<Data.Primitive>();
-      CheckPack<Data.PrimitiveNullable>();
-      Console.WriteLine("data check sucessfully!!");
+      // packing
+      PackSimple<Int32>(123);
+      PackObject<Data.Primitive>();
+      PackObject<Data.PrimitiveNullable>();
+
+      Console.WriteLine("completed.");
     }
 
-    private static void Pack<T>() where T : Base, new()
+    private static void PackSimple<T>(T value)
     {
-      Console.WriteLine(typeof(T).Name + " is packing...");
+      var data = ZeroFormatterSerializer.Serialize<T>(value);
+      SaveAndCheck<T>(data);
+    }
 
+    private static void PackObject<T>() where T : Base, new()
+    {
       T obj = new T();
       obj.DataSet();
       var data = ZeroFormatterSerializer.Serialize<T>(obj);
-      File.WriteAllBytes(PackName<T>(), data);
-
-      Console.WriteLine(typeof(T).Name + " is packed !!");
+      SaveAndCheck<T>(data);
     }
 
-    private static void CheckPack<T>() where T : new()
+    private static void SaveAndCheck<T>(byte[] data)
     {
-      // read pack file.
+      // save
+      File.WriteAllBytes(PackName<T>(), data);
+      Console.WriteLine(typeof(T).Name + " is packed !!");
+
+      // deserialize check
       FileStream fs = new FileStream(PackName<T>(), FileMode.Open);
       byte[] bs = new byte[fs.Length];
       fs.Read(bs, 0, bs.Length);
 
       // deserialize
-      var data = ZeroFormatterSerializer.Deserialize<T>(bs);
+      ZeroFormatterSerializer.Deserialize<T>(bs);
+      Console.WriteLine("deserialize ok");
     }
 
     private static string PackName<T>()
