@@ -17,11 +17,30 @@ namespace TestZeroFormatter
 
       Console.WriteLine("start packing...");
 
-      List<Int32> a = new List<Int32>() {1,2,3};
+      List<int> ints = new List<int>() {1,2,3,4,5,6,7,8,9,Int32.MaxValue};
+      List<string> strings = new List<string>() {"Can","you","see","this","array","message","?"};
 
-        // packing
-      PackSimple<Int32>(123);
-      PackSimple<List<Int32>>(a, "ListInt32");
+      // packing
+      PackSimple<Int16>(-16);
+      PackSimple<Int32>(-32);
+      PackSimple<Int64>(-64);
+      PackSimple<UInt16>(16);
+      PackSimple<UInt32>(32);
+      PackSimple<UInt64>(64);
+      PackSimple<Single>(1.23456f);
+      PackSimple<Double>(2.3456789);
+      PackSimple<bool>(false);
+      PackSimple<Byte>(255);
+      PackSimple<SByte>(-127);
+      PackSimple<Char>('a');
+      PackSimple<TimeSpan>(TimeSpan.FromSeconds(10));
+      PackSimple<DateTime>(DateTime.Now);
+      PackSimple<DateTimeOffset>(DateTimeOffset.Now);
+      PackSimple<String>("This is simple pack.");
+
+      PackSimple<List<int>>(ints, "ListInt");
+      PackSimple<List<string>>(strings, "ListString");
+
       PackObject<Data.Primitive>();
       PackObject<Data.PrimitiveNullable>();
 
@@ -44,9 +63,10 @@ namespace TestZeroFormatter
 
     private static void SaveAndCheck<T>(byte[] data, string name)
     {
+      string s = name.Length < 1 ? typeof(T).Name : name;
       // save
       File.WriteAllBytes(PackName<T>(name), data);
-      Console.WriteLine(typeof(T).Name + " is packed !!");
+      Console.WriteLine("packed : " + s );
 
       // deserialize check
       FileStream fs = new FileStream(PackName<T>(name), FileMode.Open);
@@ -55,7 +75,7 @@ namespace TestZeroFormatter
 
       // deserialize
       ZeroFormatterSerializer.Deserialize<T>(bs);
-      Console.WriteLine("deserialize ok");
+      //Console.WriteLine("deserialize ok");
     }
 
     private static string PackName<T>(string name)
