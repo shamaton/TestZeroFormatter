@@ -32,11 +32,11 @@ namespace TestZeroFormatter
         UInt16         = UInt16.MaxValue;
         UInt32         = UInt32.MaxValue;
         UInt64         = UInt64.MaxValue;
-        Float          = 1.23456f;
+        Float          = Single.MinValue;
         Double         = Double.MaxValue;
         Bool           = true;
-        Byte           = 128;
-        SByte          = 127;
+        Byte           = Byte.MinValue;
+        SByte          = SByte.MaxValue;
         Char           = 'a';
         TimeSpan       = TimeSpan.FromSeconds(1);
         DateTime       = DateTime.Now;
