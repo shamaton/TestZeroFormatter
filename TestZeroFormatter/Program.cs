@@ -19,8 +19,10 @@ namespace TestZeroFormatter
 
       List<int> ints = new List<int>() {1,2,3,4,5,6,7,8,9,Int32.MaxValue};
       List<string> strings = new List<string>() {"Can","you","see","this","array","message","?"};
+      List<float> floats = new List<float>(){1.2f, 3.4f, 5.6f, 7.8f};
+      List<ulong> empty = new List<ulong>();
 
-      // packing
+        // packing
       PackSimple<Int16>(-16);
       PackSimple<Int32>(-32);
       PackSimple<Int64>(-64);
@@ -40,6 +42,8 @@ namespace TestZeroFormatter
 
       PackSimple<List<int>>(ints, "ListInt");
       PackSimple<List<string>>(strings, "ListString");
+      PackSimple<List<float>>(floats, "ListFloat");
+      PackSimple<List<ulong>>(empty, "ListEmpty");
 
       PackObject<Data.Primitive>();
       PackObject<Data.PrimitiveNullable>();
