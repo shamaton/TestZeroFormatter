@@ -19,6 +19,8 @@ namespace TestZeroFormatter
 
       List<int> ints = new List<int>() {1,2,3,4,5,6,7,8,9,Int32.MaxValue};
       List<string> strings = new List<string>() {"Can","you","see","this","array","message","?"};
+      List<float> floats = new List<float>(){1.2f, 3.4f, 5.6f, 7.8f};
+      List<ulong> empty = new List<ulong>();
 
       Dictionary<int, int> intMap = new Dictionary<int, int>()
       {
@@ -49,6 +51,8 @@ namespace TestZeroFormatter
 
       PackSimple<List<int>>(ints, "ListInt");
       PackSimple<List<string>>(strings, "ListString");
+      PackSimple<List<float>>(floats, "ListFloat");
+      PackSimple<List<ulong>>(empty, "ListEmpty");
 
       PackSimple<Dictionary<int, int>>(intMap, "MapInt");
       PackSimple<Dictionary<string, string>>(stringMap, "MapString");
