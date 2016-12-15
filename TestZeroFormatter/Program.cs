@@ -20,6 +20,15 @@ namespace TestZeroFormatter
       List<int> ints = new List<int>() {1,2,3,4,5,6,7,8,9,Int32.MaxValue};
       List<string> strings = new List<string>() {"Can","you","see","this","array","message","?"};
 
+      Dictionary<int, int> intMap = new Dictionary<int, int>()
+      {
+        {1,2},{3,4}
+      };
+      Dictionary<string, string> stringMap = new Dictionary<string, string>()
+      {
+        {"one","two"},{"three","four"},{"five","six"}
+      };
+
       // packing
       PackSimple<Int16>(-16);
       PackSimple<Int32>(-32);
@@ -41,8 +50,12 @@ namespace TestZeroFormatter
       PackSimple<List<int>>(ints, "ListInt");
       PackSimple<List<string>>(strings, "ListString");
 
+      PackSimple<Dictionary<int, int>>(intMap, "MapInt");
+      PackSimple<Dictionary<string, string>>(stringMap, "MapString");
+
       PackObject<Data.Primitive>();
       PackObject<Data.PrimitiveNullable>();
+      PackObject<Data.Comparison>();
 
       Console.WriteLine("completed.");
     }
